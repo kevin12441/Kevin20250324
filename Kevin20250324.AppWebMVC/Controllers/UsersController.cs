@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Kevin20250324.AppWebMVC.Modelos;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kevin20250324.AppWebMVC.Controllers
 {
@@ -53,15 +59,21 @@ namespace Kevin20250324.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Username,Email,Password,Role,Notes")] User user)
+        public async Task<IActionResult> Create([Bind("Nombre,Username,Email,Password,ConfirmarPassword,Role,Notes")] User user)
         {
             if (ModelState.IsValid)
             {
+                user.Password = CalcularHashMD5(user.Password);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
+        }
+
+        private object CalcularHashMD5(object password)
+        {
+            throw new NotImplementedException();
         }
 
         // GET: Users/Edit/5
@@ -85,7 +97,7 @@ namespace Kevin20250324.AppWebMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Email,Password,Role,Notes")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Nombre,Username,Email,Password,ConfirmarPassword,Role,Notes")] User user)
         {
             if (id != user.Id)
             {
@@ -151,6 +163,21 @@ namespace Kevin20250324.AppWebMVC.Controllers
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.Id == id);
+        }
+        private string CalcularHashMD5(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2")); // "x2" convierte el byte en una cadena hexadecimal de dos caracteres.
+                }
+                return sb.ToString();
+            }
         }
     }
 }

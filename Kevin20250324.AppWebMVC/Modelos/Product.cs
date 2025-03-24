@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kevin20250324.AppWebMVC.Modelos;
 
 public partial class Product
 {
     public int Id { get; set; }
-
+    [Required(ErrorMessage = "El nombre es obligatorio.")]
     public string ProductName { get; set; } = null!;
 
     public string? Description { get; set; }

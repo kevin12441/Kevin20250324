@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Buscar productos</h1>
+<<h1>Buscar productos</h1>
 <form asp-action="Index">
     <div class="row">
         <div class="col-4">
@@ -16,7 +16,7 @@
         <div class="col-8">
             <div class="form-group">
                 <label class="control-label">Descripcion</label>
-                <textarea name="DescrptionId" class="form-control"></textarea>
+                <textarea name="descripcion" class="form-control"></textarea>
             </div>
         </div>
 
@@ -25,13 +25,13 @@
         <div class="col-4">
             <div class="form-group">
                 <label class="control-label">Marcas</label>
-                <select name="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+                <select name="marcaId" class="form-control" asp-items="ViewBag.MarcaId"></select>
             </div>
         </div>
         <div class="col-4">
             <div class="form-group">
-                <label class="control-label">Bodega</label>
-                <select name="WarehouseId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+                <label class="control-label">Categorias</label>
+                <select name="categoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
             </div>
         </div>
         <div class="col-4">
@@ -107,8 +107,8 @@
 </table>
 @section Scripts {
     <script>
-        $(document).ready(function() {
-             // $('#myTable').DataTable();
+        $(document).ready(function () {
+            // $('#myTable').DataTable();
 
             // $('#myTable').DataTable({
             //      "language": {
@@ -116,9 +116,9 @@
             //     }
             // });
 
-             $('#myTable').DataTable({
-               "language":languageTable
-             });
+            $('#myTable').DataTable({
+                "language": languageTable
+            });
         });
     </script>
 }
